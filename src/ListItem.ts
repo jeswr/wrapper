@@ -65,14 +65,15 @@ export class ListItem<T> extends TermWrapper {
     }
 
     public* items(): Iterable<ListItem<T>> {
-        if (this.firstRaw === undefined) {
-            return
-        }
+        // Iterative traversal: a recursive generator here costs O(n²) generator
+        // resumptions over the length of the list (every yielded item is pumped
+        // through every enclosing generator frame).
+        let current: ListItem<T> = this
 
-        yield this
+        while (current.firstRaw !== undefined) {
+            yield current
 
-        for (const more of this.rest.items()) {
-            yield more
+            current = current.rest
         }
     }
 }
