@@ -19,6 +19,7 @@ export * from "./mapping/SetFrom.js"
 export * from "./mapping/RequiredAs.js"
 
 export * from "./DatasetWrapper.js"
+export * from "./IndexedDatasetWrapper.js"
 export * from "./TermWrapper.js"
 export * from "./NamedGraphDataset.js"
 

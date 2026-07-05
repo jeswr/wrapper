@@ -25,7 +25,12 @@ export class RdfList<T> implements Array<T> {
     }
 
     get length(): number {
-        return [...this.items].length
+        // Count cons cells without materializing an array of them.
+        let n = 0
+        for (const _ of this.items) {
+            n++
+        }
+        return n
     }
 
     set length(_: number) {
@@ -37,8 +42,18 @@ export class RdfList<T> implements Array<T> {
     }
 
     at(index: number): T | undefined {
-        // TODO: Don't materialize all, only up to index
-        return [...this.items].at(index)?.first
+        if (index < 0) {
+            return [...this.items].at(index)?.first
+        }
+
+        let i = 0
+        for (const item of this.items) {
+            if (i++ === index) {
+                return item.first
+            }
+        }
+
+        return undefined
     }
 
     concat(...items: Array<ConcatArray<T> | T>): T[] {
